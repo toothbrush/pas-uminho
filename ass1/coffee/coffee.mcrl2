@@ -1,32 +1,3 @@
-% 
-% sort Phil = struct p1 | p2 | p3;
-%      Fork = struct f1 | f2 | f3;
-% 
-% map lf, rf: Phil -> Fork;
-% eqn lf(p1) = f1;
-%     lf(p2) = f2;
-%     lf(p3) = f3;
-%     rf(p1) = f3;
-%     rf(p2) = f1;
-%     rf(p3) = f2;
-% 
-% act get, put, up, down, lock, free: Phil # Fork;
-%     eat: Phil;
-% 
-% proc P_Phil(p: Phil) =
-%        (p == p1) -> get(p,rf(p)) . get(p,lf(p)) . eat(p) .
-%                     put(p,rf(p)) . put(p,lf(p)) . P_Phil(p)
-%                  <> get(p,lf(p)) . get(p,rf(p)) . eat(p) .
-%                     put(p,lf(p)) . put(p,rf(p)) . P_Phil(p);
-%      P_Fork(f: Fork) = sum p:Phil. up(p,f) . down(p,f) . P_Fork(f);
-% 
-% init block( { get, put, up, down },
-%        comm( { get|up->lock, put|down->free },
-%          P_Fork(f1) || P_Fork(f2) || P_Fork(f3) ||
-%          P_Phil(p1) || P_Phil(p2) || P_Phil(p3)
-%      ));
-% 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This model attempts to mimic a Senseo-style coffee machine.
 %
@@ -34,16 +5,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 act  fill;
+     addWater;
      brew;
      requestCoffee;
      drink;
+     makeCoffee;
+     fillMachine;
 
-map CAP: Pos;
+map CAP: Nat;
 eqn CAP=5;
 
 
 proc User      = requestCoffee . drink . User;
 
-     Machine(w:Pos) = (sum j:Pos. (j==w-1 && j > 0) -> brew . Machine(j) <> delta) + fill . Machine( CAP ) ;
+     Machine(w:Nat) = (sum j:Nat. (j==w-1 && w > 0) -> brew . Machine(j) <> delta) + fill . Machine( CAP ) ;
 
-init User() || Machine( CAP );
+init block( {requestCoffee, brew, addWater, fill},
+        comm( {requestCoffee|brew->makeCoffee, addWater|fill->fillMachine}, 
+            User() || Machine( CAP )
+            )
+          );

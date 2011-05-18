@@ -1,0 +1,2 @@
+% this property reflects that you can't drink infinite coffee without filling sometime.
+!(<true*>nu X.<makeCoffee.drink>X)

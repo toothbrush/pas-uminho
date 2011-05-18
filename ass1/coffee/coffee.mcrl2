@@ -16,7 +16,7 @@ map CAP: Nat;
 eqn CAP=5;
 
 
-proc User      = requestCoffee . drink . User;
+proc User           = requestCoffee . drink . User;
 
      Machine(w:Nat) = (sum j:Nat. (j==w-1 && w > 0) -> brew . Machine(j) <> delta) + fill . Machine( CAP ) ;
 

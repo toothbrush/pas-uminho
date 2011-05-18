@@ -1,4 +1,5 @@
 % The intention is to express that a buffer will only send a value v, no
-% other value, until it does a "read" action.
+% other value, until it does a "read" action, which may overwrite the old 
+% value. I.e. the repeater doesn't invent values. 
 
 forall a:Bool. [read(a).send(!a)]false

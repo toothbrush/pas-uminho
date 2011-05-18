@@ -1,5 +1,4 @@
-% This is a corrected version of the naive solution to
-% the dining philosophers problem for 3 philosophers.
+% 3 dining philosophers. From the examples repository of mCRL2.
 
 sort Phil = struct p1 | p2 | p3;
      Fork = struct f1 | f2 | f3;

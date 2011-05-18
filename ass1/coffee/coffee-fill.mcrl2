@@ -11,6 +11,7 @@ act  fill;
      drink;
      makeCoffee;
      fillMachine;
+     beEmpty;
 
 map CAP: Nat;
 eqn CAP=5;
@@ -18,9 +19,9 @@ eqn CAP=5;
 
 proc User      = (requestCoffee . drink + addWater) . User;
 
-     Machine(w:Nat) = (sum j:Nat. (j==w-1 && w > 0) -> brew . Machine(j) <> delta) + fill . Machine( CAP ) ;
+     Machine(w:Nat) = (sum j:Nat. (j==w-1 && w > 0) -> brew . Machine(j) <> beEmpty.delta) + fill . Machine( CAP ) ;
 
-init block( {requestCoffee, brew, addWater, fill},
+init block( {requestCoffee, brew, addWater, fill, beEmpty},
         comm( {requestCoffee|brew->makeCoffee, addWater|fill->fillMachine}, 
             User() || Machine( CAP )
             )

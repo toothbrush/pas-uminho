@@ -1,5 +1,5 @@
-% This is a specification of the dining philosophers problem
-% for 3 philosophers.
+% This is a corrected version of the naive solution to
+% the dining philosophers problem for 3 philosophers.
 
 sort Phil = struct p1 | p2 | p3;
      Fork = struct f1 | f2 | f3;
@@ -16,12 +16,10 @@ act get, put, up, down, lock, free: Phil # Fork;
     eat: Phil;
 
 proc P_Phil(p: Phil) =
-       %The following line implements the expression (get(p,lf(p))||get(p,rf(p)))
-       (get(p,lf(p)).get(p,rf(p)) + get(p,rf(p)).get(p,lf(p)) + get(p,lf(p))|get(p,rf(p)))
-       . eat(p) .
-       %The following line implements the expression (put(p,lf(p))||put(p,rf(p)))
-       (put(p,lf(p)).put(p,rf(p)) + put(p,rf(p)).put(p,lf(p)) + put(p,lf(p))|put(p,rf(p)))
-       . P_Phil(p);
+       (p == p1) -> get(p,rf(p)) . get(p,lf(p)) . eat(p) .
+                    put(p,rf(p)) . put(p,lf(p)) . P_Phil(p)
+                 <> get(p,lf(p)) . get(p,rf(p)) . eat(p) .
+                    put(p,lf(p)) . put(p,rf(p)) . P_Phil(p);
      P_Fork(f: Fork) = sum p:Phil. up(p,f) . down(p,f) . P_Fork(f);
 
 init block( { get, put, up, down },

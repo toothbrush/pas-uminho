@@ -1,2 +1,3 @@
-% this property reflects that you can't drink infinite coffee without filling sometime.
-!(<true*>nu X.<makeCoffee.drink>X)
+% This property reflects that an empty machine cannot make coffee.
+
+[beEmpty.makeCoffee]false

@@ -1,0 +1,4 @@
+% The intention is to express that a buffer will only send a value v, no
+% other value, until it does a "read" action.
+
+forall a:Bool. [read(a).send(!a)]false

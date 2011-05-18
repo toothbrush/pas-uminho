@@ -1,0 +1,27 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This model attempts to mimic a Senseo-style coffee machine.
+%
+% We assume a machine has capacity = 5 cups of coffee.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+act  fill;
+     addWater;
+     brew;
+     requestCoffee;
+     drink;
+     makeCoffee;
+     fillMachine;
+
+map CAP: Nat;
+eqn CAP=5;
+
+
+proc User      = (requestCoffee . drink + addWater) . User;
+
+     Machine(w:Nat) = (sum j:Nat. (j==w-1 && w > 0) -> brew . Machine(j) <> delta) + fill . Machine( CAP ) ;
+
+init block( {requestCoffee, brew, addWater, fill},
+        comm( {requestCoffee|brew->makeCoffee, addWater|fill->fillMachine}, 
+            User() || Machine( CAP )
+            )
+          );

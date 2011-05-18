@@ -1,0 +1,11 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Specification of a simple repeater
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+act read, send : Bool;
+
+proc R(v:Bool)     = read(v) . Rloop(v);
+
+     Rloop(v:Bool) = sum y:Bool. read(y) . Rloop(y) + send(v) . Rloop(v);
+
+init sum v:Bool. R(v);

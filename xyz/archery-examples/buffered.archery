@@ -1,0 +1,52 @@
+pattern ClientServer()
+elements
+  element Server() 
+  	act
+  	  rreq, sres, cres;
+    proc Server() = 
+      rreq.cres.sres.Server();
+    interface
+      in rreq;
+      out sres;
+  element Client()
+  	act
+  	  prcs, sreq, rres;
+    proc 
+      Client() = prcs.sreq.rres.Client();
+    interface
+      in rres;
+      out sreq;
+end
+
+pattern Buffer()
+elements
+element Buffer()
+  act 
+    inb, outb;
+  proc Buffer() = 
+    inb.outb.Buffer(); 
+  interface
+    in inb;
+    out outb;
+end
+
+architecture buffered = ClientServer() 
+instances
+  architecture s = Buffer() 
+    instances
+      b1 = Buffer(); b2 = Buffer(); b3 = Buffer();
+    attachments
+      from b1.outb to b2.inb; 
+      from b2.outb to b3.inb;
+    interface
+      b1.inb as rreq; 
+      b3.outb as sres;
+  end 
+  c1 = Client();
+  c2 = Client();
+attachments
+  from c1.sreq to s.rreq;
+  from c2.sreq to s.rreq;
+  from s.sres to c1.rres;
+  from s.sres to c2.rres;    
+end

@@ -1,0 +1,40 @@
+pattern ClientServer()
+elements
+  element Server() 
+	sort 
+	  H, X;
+	  Single = Real;
+	  Ident = List(Set(Nat));	
+	  HOSort = Nat   # Nat -> Ident;
+	  D = struct d1(Nat)?is_d1 | d2(arg2:Nat)?is_d2;
+  	act
+  	  receive_request, send_response: Real;
+  	  compute_response;
+    proc Server() = 
+      receive_request(id).compute_response.send_response(id).Server();
+    interface
+      in receive_request;
+      out send_response;
+  element Client(idC:Real, bC:Bool, xc:Nat)
+  	act
+  	  process;
+  	  send_request, receive_response: Real;
+    proc 
+      Client(id:Real = idC, b:Bool=bC, x:Nat = xc) =
+        process.send_request(id).receive_response(id).Client(id, b, x);
+    interface
+      in receive_response;
+      out send_request;
+end
+
+architecture clientServer = ClientServer()
+  instances
+    c1=Client(1+(1*1)-(4/2), (4==3) && (6!=7), 0);
+    c2=Client(2, true, 0);
+    s=Server();
+  attachments
+    from c1.send_request to s.receive_request;
+    from c2.send_request to s.receive_request;
+    from s.send_response to c1.receive_response;
+    from s.send_response to c2.receive_response;
+end

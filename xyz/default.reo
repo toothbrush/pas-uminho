@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:channels="http://www.cwi.nl/reo/channels" xmlns:cwi.reo="http://www.cwi.nl/reo" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xsi:schemaLocation="http://www.cwi.nl/reo/channels http://www.cwi.nl/reo#//channels">
+  <cwi.reo:Module xmi:id="_MqrogaFyEeCm7MIm6OBELA">
+    <connectors xmi:type="cwi.reo:Connector" xmi:id="_oq1ZYKGaEeCm7MIm6OBELA" name="Client">
+      <nodes xmi:type="cwi.reo:Node" xmi:id="_1wirYKGaEeCm7MIm6OBELA" sourceEnds="_3hfroqGaEeCm7MIm6OBELA" sinkEnds="_52ChIKGaEeCm7MIm6OBELA"/>
+      <nodes xmi:type="cwi.reo:Node" xmi:id="_2TbWAKGaEeCm7MIm6OBELA" sourceEnds="_4gRBAqGaEeCm7MIm6OBELA" sinkEnds="_3hfrpKGaEeCm7MIm6OBELA"/>
+      <nodes xmi:type="cwi.reo:Node" xmi:id="_2zAN8KGaEeCm7MIm6OBELA" sourceEnds="_52B6EqGaEeCm7MIm6OBELA _RPyOwKGbEeCm7MIm6OBELA" sinkEnds="_4gRBBKGaEeCm7MIm6OBELA"/>
+      <nodes xmi:type="cwi.reo:Node" xmi:id="_QtPiYKGbEeCm7MIm6OBELA" sinkEnds="_RPyOwqGbEeCm7MIm6OBELA"/>
+      <primitives xmi:type="channels:FIFO" xmi:id="_3hfroKGaEeCm7MIm6OBELA" full="true" initialValue="1">
+        <sourceEnds xmi:type="cwi.reo:SourceEnd" xmi:id="_3hfroqGaEeCm7MIm6OBELA" node="_1wirYKGaEeCm7MIm6OBELA"/>
+        <sinkEnds xmi:type="cwi.reo:SinkEnd" xmi:id="_3hfrpKGaEeCm7MIm6OBELA" node="_2TbWAKGaEeCm7MIm6OBELA"/>
+      </primitives>
+      <primitives xmi:type="channels:FIFO" xmi:id="_4gRBAKGaEeCm7MIm6OBELA">
+        <sourceEnds xmi:type="cwi.reo:SourceEnd" xmi:id="_4gRBAqGaEeCm7MIm6OBELA" node="_2TbWAKGaEeCm7MIm6OBELA"/>
+        <sinkEnds xmi:type="cwi.reo:SinkEnd" xmi:id="_4gRBBKGaEeCm7MIm6OBELA" node="_2zAN8KGaEeCm7MIm6OBELA"/>
+      </primitives>
+      <primitives xmi:type="channels:Sync" xmi:id="_52B6EKGaEeCm7MIm6OBELA">
+        <sourceEnds xmi:type="cwi.reo:SourceEnd" xmi:id="_52B6EqGaEeCm7MIm6OBELA" node="_2zAN8KGaEeCm7MIm6OBELA"/>
+        <sinkEnds xmi:type="cwi.reo:SinkEnd" xmi:id="_52ChIKGaEeCm7MIm6OBELA" node="_1wirYKGaEeCm7MIm6OBELA"/>
+      </primitives>
+      <primitives xmi:type="channels:Sync" xmi:id="_RPxnsKGbEeCm7MIm6OBELA">
+        <sourceEnds xmi:type="cwi.reo:SourceEnd" xmi:id="_RPyOwKGbEeCm7MIm6OBELA" node="_2zAN8KGaEeCm7MIm6OBELA"/>
+        <sinkEnds xmi:type="cwi.reo:SinkEnd" xmi:id="_RPyOwqGbEeCm7MIm6OBELA" node="_QtPiYKGbEeCm7MIm6OBELA"/>
+      </primitives>
+    </connectors>
+    <connectors xmi:type="cwi.reo:Connector" xmi:id="_s6ScYKGaEeCm7MIm6OBELA" name="LoadBalancer"/>
+    <connectors xmi:type="cwi.reo:Connector" xmi:id="_t0KqsKGaEeCm7MIm6OBELA" name="Servers"/>
+  </cwi.reo:Module>
+  <notation:Diagram xmi:id="_MsiCoKFyEeCm7MIm6OBELA" type="Reo" element="_MqrogaFyEeCm7MIm6OBELA" name="default.reo" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_oq31oKGaEeCm7MIm6OBELA" type="1001" element="_oq1ZYKGaEeCm7MIm6OBELA" fontName="Lucida Grande">
+      <children xmi:type="notation:DecorationNode" xmi:id="_oq4csaGaEeCm7MIm6OBELA" type="4004"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_oq4csqGaEeCm7MIm6OBELA" type="5001">
+        <children xmi:type="notation:Shape" xmi:id="_1wjScKGaEeCm7MIm6OBELA" type="2001" element="_1wirYKGaEeCm7MIm6OBELA" fontName="Lucida Grande">
+          <children xmi:type="notation:DecorationNode" xmi:id="_1wj5gKGaEeCm7MIm6OBELA" type="4001">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_1wj5gaGaEeCm7MIm6OBELA" y="5"/>
+          </children>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_1wjScaGaEeCm7MIm6OBELA" x="163" y="110"/>
+        </children>
+        <children xmi:type="notation:Shape" xmi:id="_2Tb9EKGaEeCm7MIm6OBELA" type="2001" element="_2TbWAKGaEeCm7MIm6OBELA" fontName="Lucida Grande">
+          <children xmi:type="notation:DecorationNode" xmi:id="_2TckIKGaEeCm7MIm6OBELA" type="4001">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_2TckIaGaEeCm7MIm6OBELA" y="5"/>
+          </children>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_2Tb9EaGaEeCm7MIm6OBELA" x="90" y="19"/>
+        </children>
+        <children xmi:type="notation:Shape" xmi:id="_2zBcEKGaEeCm7MIm6OBELA" type="2001" element="_2zAN8KGaEeCm7MIm6OBELA" fontName="Lucida Grande">
+          <children xmi:type="notation:DecorationNode" xmi:id="_2zCDIKGaEeCm7MIm6OBELA" type="4001">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_2zCDIaGaEeCm7MIm6OBELA" y="5"/>
+          </children>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_2zBcEaGaEeCm7MIm6OBELA" x="47" y="125"/>
+        </children>
+        <children xmi:type="notation:Shape" xmi:id="_QtQwgKGbEeCm7MIm6OBELA" type="2001" element="_QtPiYKGbEeCm7MIm6OBELA" fontName="Lucida Grande">
+          <children xmi:type="notation:DecorationNode" xmi:id="_QtRXkKGbEeCm7MIm6OBELA" type="4001">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_QtRXkaGbEeCm7MIm6OBELA" y="5"/>
+          </children>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_QtQwgaGbEeCm7MIm6OBELA" x="127" y="141"/>
+        </children>
+      </children>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_oq4csKGaEeCm7MIm6OBELA" x="32" y="61" width="234" height="193"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_s6TqgKGaEeCm7MIm6OBELA" type="1001" element="_s6ScYKGaEeCm7MIm6OBELA" fontName="Lucida Grande">
+      <children xmi:type="notation:DecorationNode" xmi:id="_s6TqgqGaEeCm7MIm6OBELA" type="4004"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_s6Tqg6GaEeCm7MIm6OBELA" type="5001"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_s6TqgaGaEeCm7MIm6OBELA" x="358" y="55" width="221" height="216"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_t0L40KGaEeCm7MIm6OBELA" type="1001" element="_t0KqsKGaEeCm7MIm6OBELA" fontName="Lucida Grande">
+      <children xmi:type="notation:DecorationNode" xmi:id="_t0Mf4KGaEeCm7MIm6OBELA" type="4004"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_t0Mf4aGaEeCm7MIm6OBELA" type="5001"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_t0L40aGaEeCm7MIm6OBELA" x="665" y="55" width="185" height="224"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_MsipsKFyEeCm7MIm6OBELA"/>
+    <edges xmi:type="notation:Connector" xmi:id="_3hhg0KGaEeCm7MIm6OBELA" type="3003" element="_3hfroKGaEeCm7MIm6OBELA" source="_1wjScKGaEeCm7MIm6OBELA" target="_2Tb9EKGaEeCm7MIm6OBELA">
+      <styles xmi:type="notation:FontStyle" xmi:id="_3hhg0aGaEeCm7MIm6OBELA" fontName="Lucida Grande"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_3hhg0qGaEeCm7MIm6OBELA" points="[8, 0, -97, -11]$[107, 19, 2, 8]"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_4gS2MKGaEeCm7MIm6OBELA" type="3003" element="_4gRBAKGaEeCm7MIm6OBELA" source="_2Tb9EKGaEeCm7MIm6OBELA" target="_2zBcEKGaEeCm7MIm6OBELA">
+      <styles xmi:type="notation:FontStyle" xmi:id="_4gS2MaGaEeCm7MIm6OBELA" fontName="Lucida Grande"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_4gS2MqGaEeCm7MIm6OBELA" points="[-7, -8, 2, 48]$[-7, -48, 2, 8]"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_52DvQKGaEeCm7MIm6OBELA" type="3001" element="_52B6EKGaEeCm7MIm6OBELA" source="_2zBcEKGaEeCm7MIm6OBELA" target="_1wjScKGaEeCm7MIm6OBELA">
+      <styles xmi:type="notation:FontStyle" xmi:id="_52DvQaGaEeCm7MIm6OBELA" fontName="Lucida Grande"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_52DvQqGaEeCm7MIm6OBELA" points="[-8, 8, 76, -78]$[-84, 78, 0, -8]"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_RPzc4KGbEeCm7MIm6OBELA" type="3001" element="_RPxnsKGbEeCm7MIm6OBELA" source="_2zBcEKGaEeCm7MIm6OBELA" target="_QtQwgKGbEeCm7MIm6OBELA">
+      <styles xmi:type="notation:FontStyle" xmi:id="_RPzc4aGbEeCm7MIm6OBELA" fontName="Lucida Grande"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_RPzc4qGbEeCm7MIm6OBELA" points="[8, 3, -66, -34]$[74, 29, 0, -8]"/>
+    </edges>
+  </notation:Diagram>
+</xmi:XMI>

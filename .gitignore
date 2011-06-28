@@ -1,3 +1,4 @@
 *.lps
 *.pbes
 *.lts
+.DS_Store

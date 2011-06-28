@@ -18,7 +18,8 @@ eqn CAP=5;
 
 proc User           = requestCoffee . drink . User;
 
-     Machine(w:Nat) = (sum j:Nat. (j==w-1 && w > 0) -> brew . Machine(j) <> delta) + fill . Machine( CAP ) ;
+     Machine(w:Nat) = (sum j:Nat. (j==w-1 && w > 0) -> brew . Machine(j) <> delta) 
+                                                     + fill . Machine( CAP ) ;
 
 init block( {requestCoffee, brew, addWater, fill},
         comm( {requestCoffee|brew->makeCoffee, addWater|fill->fillMachine}, 

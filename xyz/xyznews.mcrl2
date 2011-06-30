@@ -21,6 +21,7 @@ act
 	sendRequest, receiveRequest, sendResponse, receiveResponse : Pos;
 	process, wait, idle;
 	sReq,rReq,sRes,rRes : Pos;
+	startProcess, rproc, sproc : Pos;
 
 % =============================================================================
 
@@ -54,10 +55,22 @@ proc
 	% ---------------------------------------------------------------------------
 
 	% Create a given number of servers in parallel
-	ParallelServers(n:Pos) = (n>1) -> (Server(n) || ParallelServers(Int2Pos(n-1))) <> Server(1);
+	ParallelServers(n:Pos) = (n>1) -> (ServerProcess(n) || ParallelServers(Int2Pos(n-1))) <> ServerProcess(1);
 	
+	ServerProcess(n:Pos) = Server(n,0,[]) || Process(n);
+
 	% Receives requests (text or media mode) and provides the responses
-	Server(id:Pos) = sum cid : Pos . (cid <= NClients) -> receiveRequest(cid).process.sendResponse(cid).Server(id);
+	Server(id:Pos,len:Nat,requests:List(Pos)) = sum cid : Pos . (cid <= NClients) ->
+		( startProcess(head(requests)).Server(id,len,requests)
+		+ sendResponse(cid).Server(id,len,tail(requests))
+		+ receiveRequest(cid).Server(id,len,requests<|cid)
+		);
+		% receiveRequest(cid).process.sendResponse(cid).Server(id);
+
+	Process(id:Pos) = sum cid : Pos . (cid <= NClients) -> rproc(cid).process.sproc(cid).Process(id);
+
+	%Buffer(len:Nat) = sum cid : Pos . (cid <= NClients) ->
+	%	(((len >= LenMM) -> enqueueMM(cid).Buffer(len-LenMM)) + ((len >= LenTM) -> enqueueTM(cid).Buffer(len-LenTM)))
 
 	% Create a given number of clients in parallel
 	ParallelClients(n:Pos) = (n>1) -> (Client(n) || ParallelClients(Int2Pos(n-1))) <> Client(1);

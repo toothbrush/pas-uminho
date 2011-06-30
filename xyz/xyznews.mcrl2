@@ -1,56 +1,59 @@
-map n, m, N, R , Q : Nat;
+map n, m, n, r , q : nat;
+map NClients, NServers : Pos;
 
-var id : Nat;
+var id : nat;
 
 eqn
 	n = 115; % maximum time to deliver the response of a request
-	m = 100; % time taken to reply to R requests in media mode, or Q requests in text mode
-	N =   5; % number of available servers
-	R =   5; % number of supported media requests so that the server replies in less than n miliseconds
-	Q =  20; % number of supported test requests so that the server replies in less than n miliseconds
+	m = 100; % time taken to reply to r requests in media mode, or q requests in text mode
+	n =   5; % number of available servers
+	r =   5; % number of supported media requests so that the server replies in less than n miliseconds
+	q =  20; % number of supported test requests so that the server replies in less than n miliseconds
+
+	NClients = 10;
+	NServers = 3;
 
 act
 	rTMreq, rMMreq, sres : Nat; process;        % Server actions
 	rClientReq, rMMReq, rres, sClientRes : Nat; % LoadBalancer actions
 	sClientReq, rClientRes : Nat;               % Network actions
 
+% =============================================================================
+
 proc
-	% Receives requests (text or media mode) and provides the replies
-	% TM -- TextMode
-	% MM -- MediaMode
-	Server =
-		%(rTMreq(id) + rMMreq(id)).process.sres(id).Server;
-		sum id : Nat . (rTMreq(id) + rMMreq(id)).process.sres(id).Server;
 
 	% Counts the number of connections/requests, defines the number of servers
 	% online and their operating mode
-	%LoadBalancer(mm : Bool, nServers : Nat) = ReceiveRequest(mm, nServers) || SendRequest(mm, nServers);
 	LoadBalancer(mm : Bool, nServers : Nat)  = ReceiveRequest(mm, nServers)  + SendRequest(mm, nServers);
 
 	ReceiveRequest(mm : Bool, nServers : Nat) =
-		sum id : Nat . (rClientReq(id).rMMreq(id)).LoadBalancer(mm, nServers);
-		%sum id : Nat . (rClientReq(id).rMMreq(id)).LoadBalancer(mm, nServers);
-		%(rClientReq(id).rMMreq(id)).LoadBalancer(mm, nServers);
+		sum id : Nat . (nServers < N) -> (rClientReq(id).rMMreq(id)).LoadBalancer(mm, nServers) <> sClientRes(id).LoadBalancer(mm, nServers);
 
 	SendRequest(mm : Bool, nServers : Nat) =
 		sum id : Nat . (rres(id).sClientRes(id)).LoadBalancer(mm, nServers);
-		%sum id : Nat . (rres(id).sClientRes(id)).LoadBalancer(mm, nServers);
-		%(rres(id).sClientRes(id)).LoadBalancer(mm, nServers);
 
 	% The network (receives connections/requests from clients and send them the
 	% replies)
-	Network =
-		(NetworkReceiveRequest + NetworkSendResponse).Network;
-		%(sClientReq(id).rClientRes(id).Network) || Network;
-		%sum id : Nat . (sClientReq(id).rClientRes(id)) || Network;
+	Network = ParallelClients(NClients);
 
-	NetworkReceiveRequest = 
-		sum id : Nat . sClientReq(id).Network;
+	% ---------------------------------------------------------------------------
 
-	NetworkSendResponse =
-		sum id : Nat . rClientRes(id).Network;
+	% Create a given number of servers in parallel
+	ParallelServers(n:Pos) = (n>1) -> (Server(n) || ParallelServers(n-1)) <> Server(1);
+	
+	% Receives requests (text or media mode) and provides the responses
+	Server(id:Pos) = sum cid : Pos . (cid < NClients) -> receiveRequest(cid).process.sendResponse(cid).Server(id);
+
+	% Create a given number of clients in parallel
+	ParallelClients(n:Pos) = (n>1) -> (Client(n) || ParallelClients(n-1)) <> Client(1);
+
+	% Sends requests and waits for responses
+	Client(id:Pos) = sendRequest(id).wait.receiveResponse(id).idle.Client(id);
 
 	% XYZNews System
 	System = (Network || LoadBalancer(true,0) || Server);
+	
+% =============================================================================
 
 init System;
+

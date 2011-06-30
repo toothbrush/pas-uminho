@@ -11,8 +11,8 @@ eqn
 %	r =   5; % number of supported media requests so that the server replies in less than n miliseconds
 %	q =  20; % number of supported test requests so that the server replies in less than n miliseconds
 
-	NClients = 10;
-	NServers = 3;
+	NClients = 3;
+	NServers = 2;
 
 % =============================================================================
 
@@ -20,25 +20,31 @@ act
 	clientRequest, serverRequest, serverResponse, clientResponse : Pos;
 	sendRequest, receiveRequest, sendResponse, receiveResponse : Pos;
 	process, wait, idle;
+	sReq,rReq,sRes,rRes : Pos;
 
 % =============================================================================
 
 proc
 	% XYZNews System
-	System = (Network || LoadBalancer(true,1) || ParallelServers(NServers));
+	System = comm({
+			     sendRequest|clientRequest   -> sReq
+			, clientResponse|receiveResponse -> rRes
+			,  serverRequest|receiveRequest  -> rReq
+			,   sendResponse|serverResponse  -> sRes},
+		(Network || LoadBalancer(true,0) || ParallelServers(NServers)));
 
 	% ---------------------------------------------------------------------------
 
 	% Counts the number of connections/requests, defines the number of servers
 	% online and their operating mode
-	LoadBalancer(mm : Bool, nServers : Pos) =
+	LoadBalancer(mm : Bool, nServers : Nat) =
 		  ReceiveRequest(mm, nServers)
 		+ SendResponse(mm, nServers);
 
-	ReceiveRequest(mm : Bool, nServers : Pos) =
+	ReceiveRequest(mm : Bool, nServers : Nat) =
 		sum cid : Pos . clientRequest(cid).serverRequest(cid).LoadBalancer(mm, nServers);
 
-	SendResponse(mm : Bool, nServers : Pos) =
+	SendResponse(mm : Bool, nServers : Nat) =
 		sum cid : Pos . (serverResponse(cid).clientResponse(cid)).LoadBalancer(mm, nServers);
 
 	% The network (receives connections/requests from clients and send them the

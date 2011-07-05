@@ -57,6 +57,27 @@
 This project aims to implement a systems model in two different modeling tools,
 namely \ar and \re.
 
+\subsection{\ar}
+
+\ar is a modeling tool developed at the University of Minho, which is designed
+to be a higher-level modeling language for architectures, and converts to mCRL2
+code. 
+
+\subsection{\re}
+
+\re is a graphical modeling tool, developed at the CWI in the Netherlands, bla.
+
+\section{The problem}
+
+The problem was to model a news website, which consists of users, a load
+balancer, and a number of servers. There is some maximum $M$ of servers, and
+when the load balancer detects that the network is busy, servers can dynamically
+be added to the pool up to this maximum $M$. A server can also answer in media
+or text mode, depending on the load conditions. The aim is to guarantee that all
+requests will be serviced within a certain time limit $x$, by adding servers
+when necessary, spreading the load evenly, and switching down to text-mode when
+the servers are too busy. A server can respond to a given number of requests per
+minute in media mode, and $asdf$ per minute in text mode (with $asdf<asdf$
 
 \section{Conclusion}
 

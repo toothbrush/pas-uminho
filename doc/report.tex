@@ -1,19 +1,65 @@
 \documentclass[a4paper]{article}
 
+
+\usepackage{xspace}
+\usepackage{a4wide}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{verbatim}
+\usepackage{listings}
+\lstset{language=Haskell, basicstyle=\small}
+\usepackage{amsfonts}
+\usepackage{pifont}
+\newcommand{\tickYes}{\checkmark}
+\newcommand{\tickNo}{\hspace{1pt}\ding{55}}
+\newcommand{\ar}{Archery\xspace}
+\newcommand{\re}{REO\xspace}
+
+
+
+
+\hypersetup{
+    %bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitP},    % fits the page to the window?
+    pdftitle={Modeling in \ar and \re},    % title
+    pdfauthor={Jorge Cunha Mendes and Paul van der Walt},     % author
+    pdfsubject={Model Checking},   % subject of the document
+    pdfcreator={Jorge Cunha Mendes and Paul van der Walt},   % creator of the document
+    pdfproducer={}, % producer of the document
+    pdfkeywords=
+        {\re}
+        {\ar}
+        {Modeling}, % list of keywords
+    pdfnewwindow=true, % links in new window
+    colorlinks=true,   % false: boxed links; true: colored links
+    linkcolor=blue,    % color of internal links
+    citecolor=blue,    % color of links to bibliography
+    filecolor=blue,    % color of file links
+    urlcolor=blue      % color of external links
+}
+
+
 \author{Jorge Mendes \and Paul van der Walt}
 \date{\today}
-\title{Modeling in Archery and REO}
+\title{Modeling in \ar and \re}
 \begin{document}
 
 \maketitle
 
 \section{Introduction}
 
-test
+This project aims to implement a systems model in two different modeling tools,
+namely \ar and \re.
 
 
 \section{Conclusion}
 
-Reo will win. 
+\re will win. 
 
 \end{document}

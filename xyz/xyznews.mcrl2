@@ -43,10 +43,10 @@ proc
 		+ SendResponse(mm, nServers);
 
 	ReceiveRequest(mm : Bool, nServers : Nat) =
-		sum cid : Pos . clientRequest(cid).serverRequest(cid).LoadBalancer(mm, nServers);
+		sum cid : Pos . (cid <= NClients) -> clientRequest(cid).serverRequest(cid).LoadBalancer(mm, nServers);
 
 	SendResponse(mm : Bool, nServers : Nat) =
-		sum cid : Pos . (serverResponse(cid).clientResponse(cid)).LoadBalancer(mm, nServers);
+		sum cid : Pos . (cid <= NClients) -> (serverResponse(cid).clientResponse(cid)).LoadBalancer(mm, nServers);
 
 	% The network (receives connections/requests from clients and send them the
 	% responses)

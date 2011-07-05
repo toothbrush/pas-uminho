@@ -11,8 +11,8 @@ eqn
 %	r =   5; % number of supported media requests so that the server replies in less than n miliseconds
 %	q =  20; % number of supported test requests so that the server replies in less than n miliseconds
 
-	NClients = 10;
-	NServers = 3;
+	NClients = 3;
+	NServers = 2;
 
 % =============================================================================
 
@@ -20,25 +20,32 @@ act
 	clientRequest, serverRequest, serverResponse, clientResponse : Pos;
 	sendRequest, receiveRequest, sendResponse, receiveResponse : Pos;
 	process, wait, idle;
+	sReq,rReq,sRes,rRes : Pos;
+	startProcess, rproc, sproc : Pos;
 
 % =============================================================================
 
 proc
 	% XYZNews System
-	System = (Network || LoadBalancer(true,1) || ParallelServers(NServers));
+	System = comm({
+			     sendRequest|clientRequest   -> sReq
+			, clientResponse|receiveResponse -> rRes
+			,  serverRequest|receiveRequest  -> rReq
+			,   sendResponse|serverResponse  -> sRes},
+		(Network || LoadBalancer(true,0) || ParallelServers(NServers)));
 
 	% ---------------------------------------------------------------------------
 
 	% Counts the number of connections/requests, defines the number of servers
 	% online and their operating mode
-	LoadBalancer(mm : Bool, nServers : Pos) =
+	LoadBalancer(mm : Bool, nServers : Nat) =
 		  ReceiveRequest(mm, nServers)
 		+ SendResponse(mm, nServers);
 
-	ReceiveRequest(mm : Bool, nServers : Pos) =
+	ReceiveRequest(mm : Bool, nServers : Nat) =
 		sum cid : Pos . clientRequest(cid).serverRequest(cid).LoadBalancer(mm, nServers);
 
-	SendResponse(mm : Bool, nServers : Pos) =
+	SendResponse(mm : Bool, nServers : Nat) =
 		sum cid : Pos . (serverResponse(cid).clientResponse(cid)).LoadBalancer(mm, nServers);
 
 	% The network (receives connections/requests from clients and send them the
@@ -48,10 +55,22 @@ proc
 	% ---------------------------------------------------------------------------
 
 	% Create a given number of servers in parallel
-	ParallelServers(n:Pos) = (n>1) -> (Server(n) || ParallelServers(Int2Pos(n-1))) <> Server(1);
+	ParallelServers(n:Pos) = (n>1) -> (ServerProcess(n) || ParallelServers(Int2Pos(n-1))) <> ServerProcess(1);
 	
+	ServerProcess(n:Pos) = Server(n,0,[]) || Process(n);
+
 	% Receives requests (text or media mode) and provides the responses
-	Server(id:Pos) = sum cid : Pos . (cid <= NClients) -> receiveRequest(cid).process.sendResponse(cid).Server(id);
+	Server(id:Pos,len:Nat,requests:List(Pos)) = sum cid : Pos . (cid <= NClients) ->
+		( startProcess(head(requests)).Server(id,len,requests)
+		+ sendResponse(cid).Server(id,len,tail(requests))
+		+ receiveRequest(cid).Server(id,len,requests<|cid)
+		);
+		% receiveRequest(cid).process.sendResponse(cid).Server(id);
+
+	Process(id:Pos) = sum cid : Pos . (cid <= NClients) -> rproc(cid).process.sproc(cid).Process(id);
+
+	%Buffer(len:Nat) = sum cid : Pos . (cid <= NClients) ->
+	%	(((len >= LenMM) -> enqueueMM(cid).Buffer(len-LenMM)) + ((len >= LenTM) -> enqueueTM(cid).Buffer(len-LenTM)))
 
 	% Create a given number of clients in parallel
 	ParallelClients(n:Pos) = (n>1) -> (Client(n) || ParallelClients(Int2Pos(n-1))) <> Client(1);

@@ -11,8 +11,8 @@ eqn
 %	r =   5; % number of supported media requests so that the server replies in less than n miliseconds
 %	q =  20; % number of supported test requests so that the server replies in less than n miliseconds
 
-	NClients = 3;
-	NServers = 2;
+	NClients = 1;
+	NServers = 1;
 
 % =============================================================================
 

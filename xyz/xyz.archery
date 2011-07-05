@@ -1,1 +1,57 @@
-// not sure yet
+pattern ClientServer()
+elements
+  element Server() 
+  	act
+  	  rreq, sres : Pos;
+			cres;
+    proc Server() = 
+      sum cid : Pos . rreq(cid).cres.sres(cid).Server();
+    interface
+      in rreq;
+      out sres;
+  element Client()
+  	act
+  	  prcs, sreq, rres;
+    proc 
+      Client() = prcs.sreq.rres.Client();
+    interface
+      in rres;
+      out sreq;
+end
+
+pattern LoadBalancer()
+elements
+	element LB()
+		act
+			rreq, sreq, rres, sres;
+		proc LB() =
+			rreq.sreq.LB() + rres.sres.LB();
+		interface
+			in rreq;
+			in rres;
+			out sreq;
+			out sres;
+end
+
+architecture pf = ClientServer() 
+instances
+  architecture lb = LoadBalancer()
+    instances
+      lb = LB();
+    interface
+      lb.rreq as rreq; 
+      lb.sreq as sreq; 
+      lb.rres as rres;
+      lb.sres as sres;
+  end 
+  c1 = Client();
+  c2 = Client();
+	s1 = Server();
+attachments
+  from c1.sreq to lb.rreq;
+  from c2.sreq to lb.rreq;
+  from lb.sres to c1.rres;
+  from lb.sres to c2.rres;
+	from lb.sreq to s1.rreq;
+	from s1.sres to lb.rres;
+end

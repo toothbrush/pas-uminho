@@ -9,6 +9,8 @@ elements
     interface
       in rreq;
       out sres;
+			out rLB;
+			in sLB;
   element Client()
   	act
   	  prcs, sreq, rres;
@@ -21,11 +23,12 @@ end
 
 pattern LoadBalancer()
 elements
-	element LB(n:Nat)
+	element LB(x:Nat)
 		map NRequests : Pos;
+		eqn NRequests = 2;
 		act
 			rreq, sreq, rres, sres;
-    proc LB() =
+    proc LB(n:Nat=x) =
 			((n <= NRequests) -> rreq.sreq.LB(n+1)) + (n>0) -> rres.sres.LB(n-1);
 		interface
 			in rreq;
@@ -65,6 +68,6 @@ attachments
   from s2.sres to c3.rres;
 	from s1.rLB to lb.rreq;
 	from s2.rLB to lb.rreq;
-  from s1.sLB to lb.rres;
-  from s2.sLB to lb.rres;
+	from lb.sres to s1.sLB;
+	from lb.sres to s2.sLB;
 end

@@ -4,16 +4,16 @@ elements
   	act
   	  rreq, sres : Pos;
 			cres;
-    proc Server() = 
-      sum cid : Pos . rreq(cid).cres.sres(cid).Server();
+    proc Server() = rreq(cid).cres.sres(cid).Server();
     interface
       in rreq;
       out sres;
-  element Client()
+  element Client(x:Pos)
   	act
-  	  prcs, sreq, rres;
+  	  prcs;
+			sreq, rres: Pos;
     proc 
-      Client() = prcs.sreq.rres.Client();
+      Client(cid:Pos=x) = prcs.sreq(cid).rres(cid).Client(cid);
     interface
       in rres;
       out sreq;

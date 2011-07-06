@@ -1,0 +1,88 @@
+pattern ClientServer()
+elements
+  element Server(serverID:Pos)
+  	act
+  	  rreq, sres : Pos;
+			cres;
+    proc Server(sid : Pos = serverID) =
+			rreq(cid).cres.sres(cid).Server(sid);
+    interface
+      in rreq;
+      out sres;
+  element Client(clientID:Pos)
+  	act
+  	  prcs;
+			sreq, rres : Pos;
+    proc 
+      Client(cid : Pos = clientID) =
+				prcs.sreq(cid).rres(cid).Client(cid);
+    interface
+      in rres;
+      out sreq;
+end
+
+pattern BufferBalancer()
+	elements
+		element Buffer()
+			act
+				bpush, bpop : Pos;
+			proc Buffer(l:List(Pos) = []) =
+				((cid <= NClients) -> bpush(cid).Buffer(l<|cid) + bpop(head(cid)).Buffer(tail(l)));
+			interface
+				in  bpush;
+				out bpop;
+		element Balancer()
+			map
+				NClients, NServers : Pos;
+			eqn
+				NClients = 3;
+				NServers = 2;
+			act
+				request, push, pop, process, terminate, respond : Pos;
+				sRequest, rResponse : Pos;
+			proc Balancer(n:Nat = 0) =
+				  ((cid <= NClients) -> request(cid).push(cid).Balancer(n+1))
+				+ ((cid <= NClients) -> pop(cid).process(cid).Balancer(n))
+				+ ((cid <= NClients) -> terminate(cid).respond(cid).Balancer(n-1));
+			interface
+				in  request;
+				out sRequest;
+				in  rResponse;
+				out respond;
+				out push;
+				in  pop;
+end
+
+architecture cs = ClientServer()
+	instances
+		architecture bb = BufferBalancer()
+			instances
+				buff = Buffer();
+				balancer = Balancer();
+			attachments
+				from balancer.push to buff.bpush;
+				from buff.bpop   to balancer.pop;
+			interface
+				balancer.request   as rRequest;
+				balancer.sRequest  as sRequest;
+				balancer.rResponse as rResponse;
+				balancer.respond   as sResponse;
+		end 
+		c1 = Client(1);
+		c2 = Client(2);
+		c3 = Client(3);
+		s1 = Server(1);
+		s2 = Server(2);
+	attachments
+		from c1.sreq to bb.rRequest;
+		from c2.sreq to bb.rRequest;
+		from c3.sreq to bb.rRequest;
+		from bb.sResponse to c1.rres;
+		from bb.sResponse to c2.rres;
+		from bb.sResponse to c3.rres;
+		from bb.sRequest to s1.rreq;
+		from bb.sRequest to s2.rreq;
+		from s1.sres to bb.rResponse;
+		from s2.sres to bb.rResponse;
+end
+

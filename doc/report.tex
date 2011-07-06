@@ -15,8 +15,8 @@
 \newcommand{\tickYes}{\checkmark}
 \newcommand{\tickNo}{\hspace{1pt}\ding{55}}
 \newcommand{\ar}{Archery\xspace}
-\newcommand{\re}{REO\xspace}
-
+\newcommand{\re}{Reo\xspace}
+\newcommand{\mcrl}{mCRL2\xspace}
 
 
 
@@ -59,13 +59,20 @@ namely \ar and \re.
 
 \subsection{\ar}
 
-\ar is a modeling tool developed at the University of Minho, which is designed
-to be a higher-level modeling language for architectures, and converts to mCRL2
-code. 
+\ar is a modeling language developed at the University of Minho, which is designed
+to be a higher-level modeling language for software architectures. There is a translator
+that converts \ar models to \mcrl, making possible to use a set of tools that work with
+\mcrl to check properties about the developed models and also to simulate and visualize them.
 
 \subsection{\re}
 
-\re is a graphical modeling tool, developed at the CWI in the Netherlands, bla.
+\re is a research activity of the SEN3 research group at the CWI, in the
+Netherlands. It provides a paradigm for composition of distributed software
+components and services based on the notion of mobile channels.
+
+From this research activity, resulted the \re coordination language and the
+Extensible Coordination Tools (ECT) which are a ser of plug-ins for the Eclipse
+platform to deal with the coordination language.
 
 \section{The problem}
 

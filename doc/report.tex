@@ -182,6 +182,20 @@ a pipe which may, or may not, transmit each packet, so an alternative animation
 is generated each time. This is also not the way things usually work in real
 life, but to keep the load balancer model simple, we chose this solution.
 
+Also note the 'request sequencer', which just serves to collect the incoming
+requests and feed them to the load balancer one at a time. This is accomplished
+by a FIFO$_k$ buffer, where $k$ should be large enough to hold any number of
+requests which might be incoming. In the model, only 3 buffers are used to try
+and limit the state space. Also, only 3 clients and 3 servers are used, but even
+this model couldn't be animated in reasonable time without simplifying it quite
+drastically (removing servers and clients). 
+
+In this model, clients are modeled as a reader/writer pair, with the reader
+having as many requests as the writer. In \re, this isn't sufficient to make
+sure the \emph{correct} $n$ requests are received, but the framework for
+checking this is present (the filters), and this could be patched up later in
+\mcrl.
+
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.8\textwidth]{images/reo-model.pdf}
@@ -243,4 +257,13 @@ code whilst \ar may be translated to invalid \mcrl, probably because there is
 no type check.
 
 %Make a note about the fact that \re cannot handle values in the tokens! %todo
+
+
+\appendix
+\section{Full \re model}\label{app:reo}
+
+
+    \begin{center}
+        \includegraphics[height=0.95\textheight]{images/reo-full.png}
+    \end{center}
 \end{document}

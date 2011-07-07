@@ -123,7 +123,7 @@ The second approach, depicted in Figure \ref{fig:clbs}, is the one that we
 tried to implement, and provides a single point of communication between the
 clients and the servers. It results in less channels for communication, but the
 load balancer needs to be aware of the clients identification to route the
-requests/reponses correctly.
+requests/responses correctly.
 
 \begin{figure}[htb]
 	\begin{center}
@@ -152,6 +152,10 @@ After those failed attempts, we tried again the approach from the first
 attempt, but we couldn't complete it because of the language / translator
 limitations.
 
+The final model uses client and server elements, which are basically the same
+thing. The server waits for a request and responds, a client sends a request and
+waits for a response. This is, in the limit case, the same behaviour. 
+
 % TODO describe Reo approach(es)
 
 \subsection{\re Approach}
@@ -169,7 +173,7 @@ request to one of the servers which is in a suitable state to receive a request,
 and the other version which distributes the request in a round-robin fashion.
 Both have disadvantages, since in the first case we're actually modeling a
 'magic' load balancer, and provide no details on how this should be implemented
-in real life. One way could be for the load balancer to maintain a worklist of
+in real life. One way could be for the load balancer to maintain a work list of
 unanswered requests, which servers could poll as soon as they have time. This is
 unrealistic, however, since in real life the servers usually don't have control
 over when requests arrive. The second method (round robin) has a pitfall which
@@ -182,7 +186,7 @@ this solution in real life.
 In the actual \re model, servers are represented by two components. The one
 component just receives the request and passes it along to the actual server
 process, but will not accept another request until the server has delivered some
-response. The servers are modeled as entities with 2 FIFO's, one representing
+response. The servers are modeled as entities with 2 FIFOs, one representing
 the media mode, and the other representing text mode. In \re this makes no
 difference, but if one exports the model to \mcrl, probably a different delay
 per channel could be
@@ -225,6 +229,7 @@ pool, but we consider an idle server as being able to turn itself off.
 For comparison, we also implemented a version directly in \mcrl, since we were
 more familiar with this tool, and it allowed us to clarify the problem before
 trying in the other tools.
+
 %
 % Archery and Reo
 %
@@ -263,7 +268,7 @@ the tools to work with the language.
 
 \ar provides a better readability of the models code, with better organization
 of it, comparing to \mcrl models. However, \ar misses some features available
-in \mcrl, notably summands and paralelization, and the language or translator is
+in \mcrl, notably summands and parallelization, and the language or translator is
 fairly limited. Also, a graphical interface would improve the development of
 \ar models a lot (for example, all the connections can become quite a mess in
 \ar).
@@ -275,8 +280,12 @@ but we didn't find a way to use those components in our model using the ECT nor
 using ReoLive. Another limitation that we found in \re is the fact that it
 doesn't have proper support for values like integers in the tokens using the
 ECT. The graphical editor available in the ECT provides an easy to read
-visualization of the model, but lacks in some basic functionalites like
-copy/paste.
+visualization of the model, but lacks in some basic functionalities like
+copy/paste. We also were unable to create Components out of our Connectors (in
+some cases it works, in others it doesn't), and even when it does work, we
+couldn't create a basic building block in one \re file and use it in another.
+This is probably due to a lack of documentation, because it's likely to be
+possible somehow.
 
 Both \ar and \re provide a translation to \mcrl. \re provides correct \mcrl
 code whilst \ar may be translated to invalid \mcrl, probably because there is

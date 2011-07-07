@@ -165,16 +165,29 @@ original problem.
 % Conclusion
 %
 \section{Conclusion}
+We couldn't provide a complete model of each framework, but we were able to
+experiment them and find some of their limits. However, we did not use all the
+functionalities from each framework due to lack of documentation. For \re there
+is some documentation, but only about the coordination language, and not about
+the tools to work with the language.
+
 \ar provides a better readability of the models code, with better organization
-of it, comparing to \mcrl models. However, \ar misses some features available in
-\mcrl, namely summands and paralelization.
+of it, comparing to \mcrl models. However, \ar misses some features available
+in \mcrl, namely summands and paralelization, and the language or translator is
+fairly limited. Also, a graphical interface would improve the development of
+\ar models a lot.
 
-A graphical interface would improve the development of Archery models a lot.
+\re is powerful, due to the possibility of programming the components in Java,
+but we didn't find a way to use those components in our model using the ECT nor
+using ReoLive. Another limitation that we found in \re is the fact that it
+doesn't have proper support for values like integers in the tokens using the
+ECT. The graphical editor available in the ECT provides an easy to read
+visualization of the model, but lacks in some basic functionalites like
+copy/paste.
 
+Both \ar and \re provide a translation to \mcrl. \re provides correct \mcrl
+code whilst \ar may be translated to invalid \mcrl, probably because there is
+no type check.
 
-
-Something we definitely found to be a limitation in \re is the fact that it
-doesn't have proper support for values like integers in the tokens
-Make a note about the fact that \re cannot handle values in the tokens! %todo
-
+%Make a note about the fact that \re cannot handle values in the tokens! %todo
 \end{document}

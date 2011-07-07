@@ -76,22 +76,7 @@ the cluster, then the servers should respond without media content, i.e., they
 should respond with only the text of the requested page (media mode vs. text
 mode).
 
-%
-% The problem
-%
-%\section{The Problem}
-%
-%The problem was to model a news website, which consists of users, a load
-%balancer, and a number of servers. There is some maximum $M$ of servers, and
-%when the load balancer detects that the network is busy, servers can dynamically
-%be added to the pool up to this maximum $M$. A server can also answer in media
-%or text mode, depending on the load conditions. The aim is to guarantee that all
-%requests will be serviced within a certain time limit $x$, by adding servers
-%when necessary, spreading the load evenly, and switching down to text-mode when
-%the servers are too busy. A server can respond to a given number of requests per
-%minute in media mode, and $asdf$ per minute in text mode (with $asdf<asdf$
 
-% XYZ News is proud to be the reliable online news agency to first provide information in different formats to its audience. Their journalists arrive where news take place and prepare text, images and videos to be put online. However, their reputation has a price. Whenever an important event takes place, the website receives massive amounts of requests for a short period of time. XYZ applies two tactics to manage these peaks. The first is to dinamically add up to N web servers to the cluster and the second is to provide only text content in articles. Then, a server can be attending requests in either a full-media or a text-only mode. The first tactic is used until there are no more available servers. Then, the second is applied. XYZ board wants that every request is answered, and if possible, in less than n (n > m) miliseconds. They know that a server can respond in less than m miliseconds up to R simultaneous requests in full-media mode, and up to Q in the text-only one.
 
 %
 % Approach
@@ -133,7 +118,6 @@ requests/responses correctly.
 	\label{fig:clbs}
 \end{figure}
 
-% TODO describe Archery approach(es)
 
 \subsection{\ar Approach}
 
@@ -154,9 +138,13 @@ limitations.
 
 The final model uses client and server elements, which are basically the same
 thing. The server waits for a request and responds, a client sends a request and
-waits for a response. This is, in the limit case, the same behaviour. 
+waits for a response. This is, in the limit case, the same behaviour. The
+servers and clients communicate via the load balancer, which is composed of a
+buffer and a balancer. The buffer just maintains a worklist, and the balancer
+non-deterministically distributes a job to a server, relays a response back to
+the client from the server, or receives a new request. Here we can differentiate
+between requests, since they are modeled as integers. 
 
-% TODO describe Reo approach(es)
 
 \subsection{\re Approach}
 
@@ -226,38 +214,44 @@ pool, but we consider an idle server as being able to turn itself off.
 
 \subsection{\mcrl Approach}
 For comparison purposes, we also modeled the problem in \mcrl to check how
-different would be the approaches from a previously learned modeling language.
+different the approaches would be compared to a previously learned modeling language.
 
 The \mcrl model is easier to read, in our opinion, and has less syntactic
-sugar, needing just a little bit more of code to provide some features
+sugar, needing just a little bit more code to provide some features
 available in \ar.
 
-It is composed by a network, which have a given number of clients running in
+It is composed of a network, which has a given number of clients running in
 parallel, a load balancer and several servers also running in parallel. These
 servers have an inner process to be able to receive requests and do long
 processing at the same time.
 
-% TODO look at this:
-%For comparison, we also implemented a version directly in \mcrl, since we were
-%more familiar with this tool, and it allowed us to clarify the problem before
-%trying in the other tools.
 
 %
 % Archery and Reo
 %
 \section{Evaluating \ar and \re}
 
-In this section we will detail the approaches we used to model the problem in
-both \ar and \re, as well as design decisions and simplifications we made to the
-original problem.
 
-
-
-% Archery
-\subsection{\ar}
+After having tried both tool sets extensively, we can provide a comparison between
+the pros and cons of each. Both tools have a glaring lack of documentation.
+Notably \re, which seems to be a relatively serious and usable tool, only has a
+few very basic examples scattered around, and no information regarding the use
+of
+programmable components in larger models. Both frameworks also seem to lack an
+import feature, which would aid in making each part of the model more readable.
 
 The first small and obvious frustration with \ar is its lack of support for
-comments in the model.
+comments in the model. Also, it's unfortunate that it is impossible to
+dynamically create and remove connections, which would make a more direct
+translation of our idea of dynamic servers possible. There are also a number of
+bugs/limitations which make using the tool a challenge. For example, the error
+reporting is rather fragile, so often one encounters a null pointer exception when there was a
+parsing error. Also, one can only parameterise processes, not equations nor
+other \mcrl elements. Problems may also arise, since \textit{eqn} or
+\textit{map} definitions which are meant to be local to an element are placed at
+the top level of the \mcrl file, which makes them global and therefore they
+might interfere. It is also impossible to define constants outside of patterns
+(for example inside architectures).
 
 % Reo
 \subsection{\re}
@@ -278,6 +272,10 @@ functionalities from each framework due to lack of documentation. For \re there
 is some documentation, but only about the coordination language, and not about
 the tools to work with the language.
 
+Both \ar and \re provide a translation to \mcrl. \re provides correct \mcrl
+code whilst \ar may be translated to invalid \mcrl, probably because there is
+no type check.
+
 \ar provides a better readability of the models code, with better organization
 of it, comparing to \mcrl models. However, \ar misses some features available
 in \mcrl, notably summands and parallelization, and the language or translator is
@@ -285,25 +283,20 @@ fairly limited. Also, a graphical interface would improve the development of
 \ar models a lot (for example, all the connections can become quite a mess in
 \ar).
 
-% TODO no dynamic connections! Pity for dynamically adding servers. 
 
 \re is powerful, due to the possibility of programming the components in Java,
 but we didn't find a way to use those components in our model using the ECT nor
 using ReoLive. Another limitation that we found in \re is the fact that it
 doesn't have proper support for values like integers in the tokens using the
-ECT. The graphical editor available in the ECT provides an easy to read
-visualization of the model, but lacks in some basic functionalities like
-copy/paste. We also were unable to create Components out of our Connectors (in
-some cases it works, in others it doesn't), and even when it does work, we
-couldn't create a basic building block in one \re file and use it in another.
-This is probably due to a lack of documentation, because it's likely to be
-possible somehow.
+ECT, or at least the animation ignores them. They are however passed through to
+\mcrl, so one can write properties about them. The graphical editor available in
+the ECT provides an easy to read visualization of the model, but lacks in some
+basic functionalities like copy/paste. We also were unable to create Components
+out of our Connectors (in some cases it works, in others it doesn't), and even
+when it does work, we couldn't create a basic building block in one \re file and
+use it in another.  This is probably due to a lack of documentation, because
+it's likely to be possible somehow.
 
-Both \ar and \re provide a translation to \mcrl. \re provides correct \mcrl
-code whilst \ar may be translated to invalid \mcrl, probably because there is
-no type check.
-
-%Make a note about the fact that \re cannot handle values in the tokens! %todo
 
 
 \appendix

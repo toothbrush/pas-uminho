@@ -45,7 +45,6 @@ pattern BufferBalancer()
 				+ ((cid <= NClients) -> pop(cid).process(cid).Balancer(n))
 				+ ((cid <= NClients) -> terminate(cid).respond(cid).Balancer(n-1));
 			interface
-				in terminate;
 				in  request;
 				out sRequest;
 				in  rResponse;

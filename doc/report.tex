@@ -60,14 +60,14 @@ and \re, and to compare both approaches.
 \ar is a modeling language developed at the University of Minho, which is designed
 to be a higher-level modeling language for software architectures. There is a translator
 that converts \ar models to \mcrl, making it possible to use a set of tools that work with
-\mcrl to check properties about the developed models and also to simulate and visualize them.
+\mcrl to check properties about the developed models and also to simulate and visualise them.
 
 \re is a research activity of the SEN3 research group at the CWI, in the
 Netherlands. It provides a paradigm for composition of distributed software
 components and services based on the notion of mobile channels.
-From this research activity, resulted the \re coordination language and the
-Extensible Coordination Tools (ECT) which are a set of plug-ins for the Eclipse
-platform to deal with the coordination language.
+From this research activity,  the \re coordination language and the
+Extensible Coordination Tools (ECT), which are a set of plug-ins for the Eclipse
+platform to deal with the coordination language, both resulted.
 
 The chosen system is a dynamically adjustable cluster of servers for a news
 agency. Depending on the load of the system, it should add or remove servers
@@ -85,8 +85,8 @@ mode).
 
 There are several possible approaches to model the news system. The ones that we
 thought of are all based on the same idea: clients, servers and a load balancer. The
-functionalities and arrangement of these elements for each architecture is what
-changes between the approaches.
+functionalities and arrangement of these elements for each architecture are what
+change between the approaches.
 
 In the first approach, we can make the clients and the servers communicate with
 each other
@@ -107,7 +107,7 @@ a lot of connections from the clients to servers.
 The second approach, depicted in Figure \ref{fig:clbs}, is the one that we
 tried to implement, and provides a single point of communication between the
 clients and the servers. It results in less channels for communication, but the
-load balancer needs to be aware of the clients identification to route the
+load balancer needs to be aware of the clients' identification to route the
 requests/responses correctly.
 
 \begin{figure}[htb]
@@ -125,11 +125,12 @@ The basic approaches described above were modeled in \ar. However, due to some
 limitations in \ar (or the translator), we've not been able to create a full
 model of the system.
 
-We first tried the approach described in Figure \ref{fig:cslb}, but we hadn't
-enough knowledge at the time about out to implement the identification of the
+We first tried the approach described in Figure \ref{fig:cslb}, but we didn't
+have
+enough knowledge at the time about how to implement the identification of the
 clients.
 
-Then we tried the other approach (Figure \ref{fig:clbs}), which we dropped because we had to set all
+We then tried the other approach (Figure \ref{fig:clbs}), which we dropped because we had to set all
 the attachments by hand and that version has too many connections.
 
 After those failed attempts, we tried again the approach from the first
@@ -149,18 +150,18 @@ between requests, since they are modeled as integers.
 \subsection{\re Approach}
 
 We tried a number of approaches in \re, and had varying degrees of success. The
-current incarnation, and so far most successful, is using the following
+current incarnation, and so far the most successful one, is using the following
 architecture. In Figure \ref{fig:reo} one can see the global layout of the \re
 model. We have the clients on one side, which connect to the load balancer.
-There is an 'internet' entity in between which models that requests arrive at
+There is an `internet' entity in between which models that requests arrive at
 the load balancer sequentially. The load balancer then distributes the requests
 to one of the servers in the pool. Unfortunately, some of the things we would
 have liked to model weren't possible using \re. For example, we have two
-versions of the load balancer, one which nondeterministically distributes the
+versions of the load balancer, one which non-deterministically distributes the
 request to one of the servers which is in a suitable state to receive a request,
 and the other version which distributes the request in a round-robin fashion.
 Both have disadvantages, since in the first case we're actually modeling a
-'magic' load balancer, and provide no details on how this should be implemented
+`magic' load balancer, and provide no details on how this should be implemented
 in real life. One way could be for the load balancer to maintain a work list of
 unanswered requests, which servers could poll as soon as they have time. This is
 unrealistic, however, since in real life the servers usually don't have control
@@ -259,7 +260,7 @@ of documentation, as already has been mentioned. Another thing is that the state
 space quickly explodes; for instance, our final model couldn't be animated in
 it's entirety, we had to test the connectors separately. The IDE is also rather
 frustrating to work with, since there is no support for copy/paste, modularity
-and importing, or using the same tool multiple times. 
+and importing, or using the same drawing tool multiple times in a row.
 
 
 In the end, our impression was that both tools are still far too immature to be
@@ -282,11 +283,11 @@ the tools to work with the language.
 
 Both \ar and \re provide a translation to \mcrl. \re provides correct \mcrl
 code whilst \ar may be translated to invalid \mcrl, probably because there is
-no type check.
+no type checking.
 
-\ar provides a better readability of the models code, with better organization
+\ar provides a better readability of the model's code, with better organisation
 of it, comparing to \mcrl models. However, \ar misses some features available
-in \mcrl, notably summands and parallelization, and the language or translator is
+in \mcrl, notably summands and parallelisation, and the language or translator is
 fairly limited. Also, a graphical interface would improve the development of
 \ar models a lot (for example, all the connections can become quite a mess in
 \ar).

@@ -108,7 +108,7 @@ In the first approach, we can make the clients and the servers communicate
 directly between them. Also, the servers communicate with the load balancer to
 know if it should accept more requests and wich kind of mode (full-media or
 text-only) should be used to provide the response. The architecture of this
-approach is depicted in figure \ref{fig:cslb}. However, this approach needs
+approach is depicted in Figure \ref{fig:cslb}. However, this approach needs
 a lot of connections from the clients to servers.
 
 \begin{figure}[htb]
@@ -119,7 +119,7 @@ a lot of connections from the clients to servers.
 	\label{fig:cslb}
 \end{figure}
 
-The second approach, depicted in figure \ref{fig:clbs}, is the one that we
+The second approach, depicted in Figure \ref{fig:clbs}, is the one that we
 tried to implement, and provides an unique point of communication between the
 clients and the servers. It results in less channels for communication, but the
 load balancer needs to be aware of the clients identification to route the
@@ -136,6 +136,48 @@ requests/reponses correctly.
 % TODO describe Archery approach(es)
 
 % TODO describe Reo approach(es)
+
+\subsection{\re Approach}
+
+We tried a number of approaches in \re, and had varying degrees of success. The
+current incarnation, and so far most successful, is using the following
+architecture. In Figure \ref{fig:reo} one can see the global layout of the \re
+model. We have the clients on one side, which connect to the load balancer.
+There is an 'internet' entity in between which models that requests arrive at
+the load balancer sequentially. The load balancer then distributes the requests
+to one of the servers in the pool. Unfortunately, some of the things we would
+have liked to model weren't possible using \re. For example, we have two
+versions of the load balancer, one which nondeterministically distributes the
+request to one of the servers which is in a suitable state to receive a request,
+and the other version which distributes the request in a round-robin fashion.
+Both have disadvantages, since in the first case we're actually modeling a
+'magic' load balancer, and provide no details on how this should be implemented
+in real life. One way could be for the load balancer to maintain a worklist of
+unanswered requests, which servers could poll as soon as they have time. This is
+unrealistic, however, since in real life the servers usually don't have control
+over when requests arrive. The second method (round robin) has a pitfall which
+is more related to our lack of experience with \re. The problem is that if it is a
+given servers turn, but that server is still busy servicing the last request,
+the load balancer blocks until the server is free again. This is undesirable,
+since another server might be idle. It would, however, be easier to implement
+this solution in real life.
+
+In the actual \re model, servers are represented by two components. The one
+component just receives the request and passes it along to the actual server
+process, but will not accept another request until the server has delivered some
+response. The servers are modeled as entities with 2 FIFO's, one representing
+the media mode, and the other representing text mode. In \re this makes no
+difference, but if one exports the model to \mcrl, probably a different delay
+per channel could be
+implemented there. 
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{images/reo-model.pdf}
+    \end{center}
+    \caption{Summary of the \re model.}
+    \label{fig:reo}
+\end{figure}
 
 %
 % Archery and Reo

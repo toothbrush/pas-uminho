@@ -219,6 +219,19 @@ checking this is present (the filters), and this could be patched up later in
     \label{fig:reo}
 \end{figure}
 
+\subsection{\mcrl Approach}
+For comparison purposes, we also modeled the problem in \mcrl to check how
+different would be the approaches from a previously learned modeling language.
+
+The \mcrl model is easier to read, in our opinion, and has less syntactic
+sugar, needing just a little bit more of code to provide some features
+available in \ar.
+
+It is composed by a network, which have a given number of clients running in
+parallel, a load balancer and several servers also running in parallel. These
+servers have an inner process to be able to receive requests and do long
+processing at the same time.
+
 %
 % Archery and Reo
 %

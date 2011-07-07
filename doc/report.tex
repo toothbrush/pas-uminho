@@ -98,15 +98,15 @@ mode).
 %
 \section{Approach}
 
-% TODO describe generic approach
-There can be several approaches to model the news system. The ones that we
-though of are based on the same idea: client, servers and a load balancer. The
-functionalities and arrangement of this elements for each architecture is what
-change between the approaches.
+There are several possible approaches to model the news system. The ones that we
+thought of are all based on the same idea: clients, servers and a load balancer. The
+functionalities and arrangement of these elements for each architecture is what
+changes between the approaches.
 
-In the first approach, we can make the clients and the servers communicate
-directly between them. Also, the servers communicate with the load balancer to
-know if it should accept more requests and wich kind of mode (full-media or
+In the first approach, we can make the clients and the servers communicate with
+each other
+directly. Also, the servers communicate with the load balancer to
+know if they should accept more requests and which mode (full-media or
 text-only) should be used to provide the response. The architecture of this
 approach is depicted in Figure \ref{fig:cslb}. However, this approach needs
 a lot of connections from the clients to servers.
@@ -115,12 +115,12 @@ a lot of connections from the clients to servers.
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{images/c_s_lb.png}
 	\end{center}
-	\caption{C S LB}
+	\caption{Client $\leftrightarrow$ Server $\leftrightarrow$ Load balancer }
 	\label{fig:cslb}
 \end{figure}
 
 The second approach, depicted in Figure \ref{fig:clbs}, is the one that we
-tried to implement, and provides an unique point of communication between the
+tried to implement, and provides a single point of communication between the
 clients and the servers. It results in less channels for communication, but the
 load balancer needs to be aware of the clients identification to route the
 requests/reponses correctly.
@@ -129,7 +129,7 @@ requests/reponses correctly.
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{images/c_lb_s.png}
 	\end{center}
-	\caption{C LB S}
+	\caption{Client $\leftrightarrow$ Load balancer  $\leftrightarrow$ Server }
 	\label{fig:clbs}
 \end{figure}
 
@@ -188,6 +188,29 @@ difference, but if one exports the model to \mcrl, probably a different delay
 per channel could be
 implemented there. 
 
+The other thing that was needed, was to somehow send the server's response back
+to the right client. The way this was solved in the \re model is by creating a
+connector which receives all the responses and filters them. Unfortunately \re
+doesn't actually know what value a given token has, even though this is
+reflected in the generated \mcrl code. The result is that the filter is seen as
+a pipe which may, or may not, transmit each packet, so an alternative animation
+is generated each time. This is also not the way things usually work in real
+life, but to keep the load balancer model simple, we chose this solution.
+
+Also note the 'request sequencer', which just serves to collect the incoming
+requests and feed them to the load balancer one at a time. This is accomplished
+by a FIFO$_k$ buffer, where $k$ should be large enough to hold any number of
+requests which might be incoming. In the model, only 3 buffers are used to try
+and limit the state space. Also, only 3 clients and 3 servers are used, but even
+this model couldn't be animated in reasonable time without simplifying it quite
+drastically (removing servers and clients). 
+
+In this model, clients are modeled as a reader/writer pair, with the reader
+having as many requests as the writer. In \re, this isn't sufficient to make
+sure the \emph{correct} $n$ requests are received, but the framework for
+checking this is present (the filters), and this could be patched up later in
+\mcrl.
+
 \begin{figure}[h]
     \begin{center}
         \includegraphics[width=0.8\textwidth]{images/reo-model.pdf}
@@ -236,6 +259,8 @@ in \mcrl, namely summands and paralelization, and the language or translator is
 fairly limited. Also, a graphical interface would improve the development of
 \ar models a lot.
 
+% TODO no dynamic connections! Pity for dynamically adding servers. 
+
 \re is powerful, due to the possibility of programming the components in Java,
 but we didn't find a way to use those components in our model using the ECT nor
 using ReoLive. Another limitation that we found in \re is the fact that it
@@ -249,4 +274,13 @@ code whilst \ar may be translated to invalid \mcrl, probably because there is
 no type check.
 
 %Make a note about the fact that \re cannot handle values in the tokens! %todo
+
+
+\appendix
+\section{Full \re model}\label{app:reo}
+
+
+    \begin{center}
+        \includegraphics[height=0.95\textheight]{images/reo-full.png}
+    \end{center}
 \end{document}

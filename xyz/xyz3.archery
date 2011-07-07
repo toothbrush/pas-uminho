@@ -27,7 +27,7 @@ pattern BufferBalancer()
 			act
 				bpush, bpop : Pos;
 			proc Buffer(l:List(Pos) = []) =
-				((cid <= NClients) -> bpush(cid).Buffer(l<|cid) + bpop(head(cid)).Buffer(tail(l)));
+				((cid <= NClients) -> bpush(cid).Buffer(l<|cid)) + bpop(head(l)).Buffer(tail(l));
 			interface
 				in  bpush;
 				out bpop;

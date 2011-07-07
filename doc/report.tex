@@ -60,37 +60,48 @@
 This project aims to model a system using two distinct frameworks, namely \ar
 and \re, and to compare both approaches.
 
-\subsection{\ar}
-
 \ar is a modeling language developed at the University of Minho, which is designed
 to be a higher-level modeling language for software architectures. There is a translator
 that converts \ar models to \mcrl, making possible to use a set of tools that work with
 \mcrl to check properties about the developed models and also to simulate and visualize them.
 
-\subsection{\re}
-
 \re is a research activity of the SEN3 research group at the CWI, in the
 Netherlands. It provides a paradigm for composition of distributed software
 components and services based on the notion of mobile channels.
-
 From this research activity, resulted the \re coordination language and the
 Extensible Coordination Tools (ECT) which are a ser of plug-ins for the Eclipse
 platform to deal with the coordination language.
 
+The choosen system is a dynamically adjustable cluster of servers for a news
+agency. Depending on the load of the system, it should add or remove servers
+from the cluster. If the load is too high with all the servers available for
+the cluster, then the servers should respond without media content, i.e., they
+should respond only the text of the requested page.
+
+% XYZ News is proud to be the reliable online news agency to first provide information in different formats to its audience. Their journalists arrive where news take place and prepare text, images and videos to be put online. However, their reputation has a price. Whenever an important event takes place, the website receives massive amounts of requests for a short period of time. XYZ applies two tactics to manage these peaks. The first is to dinamically add up to N web servers to the cluster and the second is to provide only text content in articles. Then, a server can be attending requests in either a full-media or a text-only mode. The first tactic is used until there are no more available servers. Then, the second is applied. XYZ board wants that every request is answered, and if possible, in less than n (n > m) miliseconds. They know that a server can respond in less than m miliseconds up to R simultaneous requests in full-media mode, and up to Q in the text-only one.
+
+
 %
 % The problem
 %
-\section{The problem}
+%\section{The Problem}
+%
+%The problem was to model a news website, which consists of users, a load
+%balancer, and a number of servers. There is some maximum $M$ of servers, and
+%when the load balancer detects that the network is busy, servers can dynamically
+%be added to the pool up to this maximum $M$. A server can also answer in media
+%or text mode, depending on the load conditions. The aim is to guarantee that all
+%requests will be serviced within a certain time limit $x$, by adding servers
+%when necessary, spreading the load evenly, and switching down to text-mode when
+%the servers are too busy. A server can respond to a given number of requests per
+%minute in media mode, and $asdf$ per minute in text mode (with $asdf<asdf$
 
-The problem was to model a news website, which consists of users, a load
-balancer, and a number of servers. There is some maximum $M$ of servers, and
-when the load balancer detects that the network is busy, servers can dynamically
-be added to the pool up to this maximum $M$. A server can also answer in media
-or text mode, depending on the load conditions. The aim is to guarantee that all
-requests will be serviced within a certain time limit $x$, by adding servers
-when necessary, spreading the load evenly, and switching down to text-mode when
-the servers are too busy. A server can respond to a given number of requests per
-minute in media mode, and $asdf$ per minute in text mode (with $asdf<asdf$
+% XYZ News is proud to be the reliable online news agency to first provide information in different formats to its audience. Their journalists arrive where news take place and prepare text, images and videos to be put online. However, their reputation has a price. Whenever an important event takes place, the website receives massive amounts of requests for a short period of time. XYZ applies two tactics to manage these peaks. The first is to dinamically add up to N web servers to the cluster and the second is to provide only text content in articles. Then, a server can be attending requests in either a full-media or a text-only mode. The first tactic is used until there are no more available servers. Then, the second is applied. XYZ board wants that every request is answered, and if possible, in less than n (n > m) miliseconds. They know that a server can respond in less than m miliseconds up to R simultaneous requests in full-media mode, and up to Q in the text-only one.
+
+%
+% Approach
+%
+\section{Approach}
 
 %
 % Archery and Reo
@@ -115,14 +126,10 @@ A graphical interface would improve a lot the development of Archery models.
 
 \ar winning\dots
 
+\section{Conclusion}
 %
 %	Conclusion
 %
-=======
-
-% XYZ News is proud to be the reliable online news agency to first provide information in different formats to its audience. Their journalists arrive where news take place and prepare text, images and videos to be put online. However, their reputation has a price. Whenever an important event takes place, the website receives massive amounts of requests for a short period of time. XYZ applies two tactics to manage these peaks. The first is to dinamically add up to N web servers to the cluster and the second is to provide only text content in articles. Then, a server can be attending requests in either a full-media or a text-only mode. The first tactic is used until there are no more available servers. Then, the second is applied. XYZ board wants that every request is answered, and if possible, in less than n (n > m) miliseconds. They know that a server can respond in less than m miliseconds up to R simultaneous requests in full-media mode, and up to Q in the text-only one.
-
-\section{Conclusion}
 
 \re will win. 
 

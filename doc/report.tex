@@ -101,6 +101,18 @@ should respond only the text of the requested page.
 \section{Approach}
 
 % TODO describe generic approach
+There can be several approaches to model the news system. The ones that we
+though of are based on the same idea: client, servers and a load balancer. The
+functionalities and arrangement of this elements for each architecture is what
+change between the approaches.
+
+In the first approach, we can make the clients and the servers communicate
+directly between them. Also, the servers communicate with the load balancer to
+know if it should accept more requests and wich kind of mode (full-media or
+text-only) should be used to provide the response. The architecture of this
+approach is depicted in figure \ref{fig:cslb}. However, this approach needs
+a lot of connections from the clients to servers.
+
 \begin{figure}[htb]
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{images/c_s_lb.png}
@@ -108,6 +120,13 @@ should respond only the text of the requested page.
 	\caption{C S LB}
 	\label{fig:cslb}
 \end{figure}
+
+The second approach, depicted in figure \ref{fig:clbs}, is the one that we
+tried to implement, and provides an unique point of communication between the
+clients and the servers. It results in less channels for communication, but the
+load balancer needs to be aware of the clients identification to route the
+requests/reponses correctly.
+
 \begin{figure}[htb]
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{images/c_lb_s.png}

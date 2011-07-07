@@ -145,7 +145,7 @@ We first tried the approach described in Figure \ref{fig:cslb}, but we hadn't
 enough knowledge at the time about out to implement the identification of the
 clients.
 
-Then we tried the other approach, which we dropped because we had to set all
+Then we tried the other approach (Figure \ref{fig:clbs}), which we dropped because we had to set all
 the attachments by hand and that version has too many connections.
 
 After those failed attempts, we tried again the approach from the first
@@ -186,7 +186,7 @@ response. The servers are modeled as entities with 2 FIFO's, one representing
 the media mode, and the other representing text mode. In \re this makes no
 difference, but if one exports the model to \mcrl, probably a different delay
 per channel could be
-implemented there. 
+implemented there.
 
 The other thing that was needed, was to somehow send the server's response back
 to the right client. The way this was solved in the \re model is by creating a
@@ -203,13 +203,14 @@ by a FIFO$_k$ buffer, where $k$ should be large enough to hold any number of
 requests which might be incoming. In the model, only 3 buffers are used to try
 and limit the state space. Also, only 3 clients and 3 servers are used, but even
 this model couldn't be animated in reasonable time without simplifying it quite
-drastically (removing servers and clients). 
+drastically (removing servers and clients).
 
 In this model, clients are modeled as a reader/writer pair, with the reader
 having as many requests as the writer. In \re, this isn't sufficient to make
 sure the \emph{correct} $n$ requests are received, but the framework for
 checking this is present (the filters), and this could be patched up later in
-\mcrl.
+\mcrl. We also don't explicitly support adding and removing servers from the
+pool, but we consider an idle server as being able to turn itself off.
 
 \begin{figure}[h]
     \begin{center}
@@ -231,6 +232,11 @@ It is composed by a network, which have a given number of clients running in
 parallel, a load balancer and several servers also running in parallel. These
 servers have an inner process to be able to receive requests and do long
 processing at the same time.
+
+% TODO look at this:
+%For comparison, we also implemented a version directly in \mcrl, since we were
+%more familiar with this tool, and it allowed us to clarify the problem before
+%trying in the other tools.
 
 %
 % Archery and Reo
@@ -262,17 +268,18 @@ comments in the model.
 % Conclusion
 %
 \section{Conclusion}
-We couldn't provide a complete model of each framework, but we were able to
-experiment them and find some of their limits. However, we did not use all the
+We couldn't provide a complete model in each framework, but we were able to
+experiment with them and find some of their limits. However, we did not use all the
 functionalities from each framework due to lack of documentation. For \re there
 is some documentation, but only about the coordination language, and not about
 the tools to work with the language.
 
 \ar provides a better readability of the models code, with better organization
 of it, comparing to \mcrl models. However, \ar misses some features available
-in \mcrl, namely summands and paralelization, and the language or translator is
+in \mcrl, notably summands and paralelization, and the language or translator is
 fairly limited. Also, a graphical interface would improve the development of
-\ar models a lot.
+\ar models a lot (for example, all the connections can become quite a mess in
+\ar).
 
 % TODO no dynamic connections! Pity for dynamically adding servers. 
 

@@ -224,11 +224,23 @@ pool, but we consider an idle server as being able to turn itself off.
     \label{fig:reo}
 \end{figure}
 
-\section{\mcrl Approach}
+\subsection{\mcrl Approach}
+For comparison purposes, we also modeled the problem in \mcrl to check how
+different would be the approaches from a previously learned modeling language.
 
-For comparison, we also implemented a version directly in \mcrl, since we were
-more familiar with this tool, and it allowed us to clarify the problem before
-trying in the other tools.
+The \mcrl model is easier to read, in our opinion, and has less syntactic
+sugar, needing just a little bit more of code to provide some features
+available in \ar.
+
+It is composed by a network, which have a given number of clients running in
+parallel, a load balancer and several servers also running in parallel. These
+servers have an inner process to be able to receive requests and do long
+processing at the same time.
+
+% TODO look at this:
+%For comparison, we also implemented a version directly in \mcrl, since we were
+%more familiar with this tool, and it allowed us to clarify the problem before
+%trying in the other tools.
 
 %
 % Archery and Reo

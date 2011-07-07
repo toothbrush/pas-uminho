@@ -1,16 +1,9 @@
 map
-%	n, m, n, r , q : Nat;
 	NClients, NServers : Pos;
 
 % =============================================================================
 
 eqn
-%	n = 115; % maximum time to deliver the response of a request
-%	m = 100; % time taken to reply to r requests in media mode, or q requests in text mode
-%	n =   5; % number of available servers
-%	r =   5; % number of supported media requests so that the server replies in less than n miliseconds
-%	q =  20; % number of supported test requests so that the server replies in less than n miliseconds
-
 	NClients = 1;
 	NServers = 1;
 
@@ -68,9 +61,6 @@ proc
 		% receiveRequest(cid).process.sendResponse(cid).Server(id);
 
 	Process(id:Pos) = sum cid : Pos . (cid <= NClients) -> rproc(cid).process.sproc(cid).Process(id);
-
-	%Buffer(len:Nat) = sum cid : Pos . (cid <= NClients) ->
-	%	(((len >= LenMM) -> enqueueMM(cid).Buffer(len-LenMM)) + ((len >= LenTM) -> enqueueTM(cid).Buffer(len-LenTM)))
 
 	% Create a given number of clients in parallel
 	ParallelClients(n:Pos) = (n>1) -> (Client(n) || ParallelClients(Int2Pos(n-1))) <> Client(1);

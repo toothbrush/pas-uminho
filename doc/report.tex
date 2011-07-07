@@ -59,21 +59,22 @@ and \re, and to compare both approaches.
 
 \ar is a modeling language developed at the University of Minho, which is designed
 to be a higher-level modeling language for software architectures. There is a translator
-that converts \ar models to \mcrl, making possible to use a set of tools that work with
+that converts \ar models to \mcrl, making it possible to use a set of tools that work with
 \mcrl to check properties about the developed models and also to simulate and visualize them.
 
 \re is a research activity of the SEN3 research group at the CWI, in the
 Netherlands. It provides a paradigm for composition of distributed software
 components and services based on the notion of mobile channels.
 From this research activity, resulted the \re coordination language and the
-Extensible Coordination Tools (ECT) which are a ser of plug-ins for the Eclipse
+Extensible Coordination Tools (ECT) which are a set of plug-ins for the Eclipse
 platform to deal with the coordination language.
 
-The choosen system is a dynamically adjustable cluster of servers for a news
+The chosen system is a dynamically adjustable cluster of servers for a news
 agency. Depending on the load of the system, it should add or remove servers
 from the cluster. If the load is too high with all the servers available for
 the cluster, then the servers should respond without media content, i.e., they
-should respond only the text of the requested page.
+should respond with only the text of the requested page (media mode vs. text
+mode).
 
 %
 % The problem
@@ -122,9 +123,29 @@ should respond only the text of the requested page.
 %
 \section{Evaluating \ar and \re}
 
+In this section we will detail the approaches we used to model the problem in
+both \ar and \re, as well as design decisions and simplifications we made to the
+original problem.
+
+
+
 % Archery
 \subsection{\ar}
 
+
+% Reo
+\subsection{\re}
+
+
+% Archery vs. Reo
+\subsection{\ar vs. \re}
+
+\ar winning\dots
+
+%
+% Conclusion
+%
+\section{Conclusion}
 \ar provides a better readability of the models code, with better organization of it,
 comparing to \mcrl models.
 
@@ -132,21 +153,6 @@ However, \ar misses some features available in \mcrl, namely summands and parale
 
 A graphical interface would improve a lot the development of Archery models.
 
-% Reo
-\subsection{\re}
-
-Make a note about the fact that \re cannot handle values in the tokens!
-
-% Archery vs. Reo
-\subsection{\ar vs. \re}
-
-\ar winning\dots
-
-\section{Conclusion}
-%
-%	Conclusion
-%
-
-\re will win. 
+Make a note about the fact that \re cannot handle values in the tokens! %todo
 
 \end{document}

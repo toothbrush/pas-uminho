@@ -42,7 +42,7 @@
     urlcolor=blue      % color of external links
 }
 
-\author{Jorge Mendes \and Paul van der Walt}
+\author{Jorge Mendes \and Paul van der Walt \and \small{Departamento de Inform\'atica, Universidade do Minho}}
 \date{\today}
 \title{Modeling in \ar and \re}
 \begin{document}
@@ -212,6 +212,7 @@ pool, but we consider an idle server as being able to turn itself off.
     \label{fig:reo}
 \end{figure}
 
+\clearpage
 \subsection{\mcrl Approach}
 For comparison purposes, we also modeled the problem in \mcrl to check how
 different the approaches would be compared to a previously learned modeling language.
@@ -253,14 +254,21 @@ the top level of the \mcrl file, which makes them global and therefore they
 might interfere. It is also impossible to define constants outside of patterns
 (for example inside architectures).
 
-% Reo
-\subsection{\re}
+As far as \re goes, we also had some issues. These mostly seem related to a lack
+of documentation, as already has been mentioned. Another thing is that the state
+space quickly explodes; for instance, our final model couldn't be animated in
+it's entirety, we had to test the connectors separately. The IDE is also rather
+frustrating to work with, since there is no support for copy/paste, modularity
+and importing, or using the same tool multiple times. 
 
 
-% Archery vs. Reo
-\subsection{\ar vs. \re}
+In the end, our impression was that both tools are still far too immature to be
+used for anything serious, since we had to drastically simplify our models to
+even be able to express them. The tools might be up for another experiment once
+there is proper documentation, but without this, the learning curve seems too
+steep. 
 
-\ar winning\dots
+
 
 %
 % Conclusion
